@@ -12,9 +12,10 @@ struct node{
 };
 
 void build(node* root,ll arr[],ll n, ll exp){
+    node* temp_node;
     for(ll i=0;i<n;i++){
         ll val=arr[i];
-        node* temp_node=root;
+        temp_node=root;
         for(ll j=exp;j;j/=10){
             ll v=val/j;
             val%=j;
@@ -35,7 +36,7 @@ void find_sorted_array(node* root,ll val){
     }
 
     if(!flag){
-        while(--root->val){
+        while((root->val)--){
             temp_sort[pos++]=val;
         }
     }
@@ -44,6 +45,7 @@ void find_sorted_array(node* root,ll val){
 void ast_sort_two(ll arr[],ll n){
     node* root=new node();
     temp_sort.resize(n);
+    pos=0;
     ll max_val=0;
     for(ll i=0;i<n;i++) max_val=max(max_val,arr[i]);
     if(!max_val) return;
@@ -51,5 +53,8 @@ void ast_sort_two(ll arr[],ll n){
 
     build(root,arr,n,exp);
     find_sorted_array(root,0);
-    for(ll i=0;i<n;i++) arr[i]=temp_sort[i];
+
+    for(ll i=0;i<n;i++){
+        arr[i]=temp_sort[i];
+    }
 }

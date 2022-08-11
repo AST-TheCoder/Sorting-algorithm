@@ -53,6 +53,20 @@ int main()
     end_time=clock();
     check("Heap Sort");
 
+    //AST Sort three
+    make_clone();
+    start_time=clock();
+    ast_sort_three(temp,n);
+    end_time=clock();
+    check("AST Sort three");
+
+    //AST Sort two
+    make_clone();
+    start_time=clock();
+    ast_sort_two(temp,n);
+    end_time=clock();
+    check("AST Sort two");
+
     //AST Sort one
     make_clone();
     start_time=clock();

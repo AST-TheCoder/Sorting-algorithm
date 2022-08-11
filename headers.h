@@ -5,3 +5,5 @@ using namespace std;
 #include "merge_sort.h"
 #include "heap_sort.h"
 #include "ast_sort_one.h"
+#include "ast_sort_two.h"
+#include "ast_sort_three.h"
