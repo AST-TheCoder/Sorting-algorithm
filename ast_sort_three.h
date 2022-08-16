@@ -19,7 +19,7 @@ void build_trie(node_three* root,ll arr[],ll length[],ll n){
         while(length[i]){
             ll v=0;
             if(!len){
-                v=val%10;
+                v=val-(val/10)*10;
                 val/=10;
                 length[i]--;
             }
@@ -59,15 +59,15 @@ void ast_sort_three(ll arr[],ll n){
         length[i]=len;
     }
 
-    clock_t start_time,end_time;
-    start_time=clock();
+    //clock_t start_time,end_time;
+    //start_time=clock();
     build_trie(root,arr,length,n);
-    end_time=clock();
-    double time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
-    cout<<time_taken<<endl;
-    start_time=clock();
+    //end_time=clock();
+    //double time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
+    //cout<<time_taken<<endl;
+    //start_time=clock();
     sort_array(root,arr,0);
-    end_time=clock();
-    time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
-    cout<<time_taken<<endl;
+    //end_time=clock();
+    //time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
+    //cout<<time_taken<<endl;
 }

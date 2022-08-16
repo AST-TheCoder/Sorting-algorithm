@@ -13,10 +13,10 @@ ll randval(ll beg,ll len){
 
 int main()
 {
-    freopen("input.txt","w",stdout);
+    freopen("inputs/input07.txt","w",stdout);
     ll n=randval(1,1000000);
     cout<<n<<endl;
     for(ll i=0;i<n;i++){
-        cout<<randval(1,1000000000000000000)<<" ";
+        cout<<randval(1,10000000)<<" ";
     }cout<<endl;
 }
