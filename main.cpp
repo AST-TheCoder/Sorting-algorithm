@@ -4,7 +4,7 @@ long long int arr[1000007],n,temp[1000007];
 clock_t start_time,end_time;
 
 void take_input(){
-    freopen("inputs/input07.txt","r",stdin);
+    freopen("inputs/input01.txt","r",stdin);
     scanf("%lli",&n);
     for(int i=0;i<n;i++) scanf("%lli",&arr[i]);
 }
@@ -31,6 +31,13 @@ void check(string s){
 int main()
 {
     take_input();
+
+    //STL Sort
+    make_clone();
+    start_time=clock();
+    stl_sort(temp,n);
+    end_time=clock();
+    check("STL Sort");
 
     //Radix Sort
     make_clone();
