@@ -3,71 +3,93 @@ using namespace std;
 
 #define ll long long int
 
-ll nxt_index,val_length;
-
+ll p[11],nxt_idx;
 struct node_four{
-    int val=0,chk=0;
+    long long int val=0,len=0,cnt=0,chk=0,flag=-1;
     node_four* child[10];
 };
 
-void bld_trie(node_four* root,ll arr[],ll length[],ll n){
-    node_four* temp_node;
+void bld_trie(node_four* root,ll arr[],ll n,ll val_length){
     for(ll i=0;i<n;i++){
-        ll val=arr[i];
-        ll len=val_length-length[i];
-        temp_node=root;
-        while(length[i]){
-            ll v=0;
-            if(!len){
-                v=val-(val/10)*10;
-                val/=10;
-                length[i]--;
-            }
-            else len--;
-            if(!(temp_node->chk&(1<<v))){
-                temp_node->child[v]=new node_four();
-                temp_node->chk|=(1<<v);
-            }
-            temp_node=temp_node->child[v];
-            if(!length[i]) temp_node->val++;
+        node_four* curr_node=root;
+        ll val=arr[i],len=val_length,cnt=1;
+        if(!val){
+            curr_node->flag=0;
+            curr_node->cnt++;
+            continue;
         }
+
+        while(len!=1){
+            len/=10;
+            ll v=val/len;
+            val%=len;
+//cout<<"CHK"<<" "<<i<<" "<<arr[i]<<" "<<v<<" "<<val<<" "<<len<<endl;
+            if((curr_node->chk&p[v])==0){
+                curr_node->child[v]=new node_four();
+                curr_node->chk|=p[v];
+                curr_node=curr_node->child[v];
+                curr_node->len=len;
+                curr_node->val=val;
+                curr_node->cnt=cnt;
+                if(len!=1) curr_node->flag=val/(len/10);
+                else curr_node->flag=0;
+                break;
+            }
+            curr_node=curr_node->child[v];
+            if(curr_node->val==val){
+                curr_node->cnt++;
+                break;
+            }
+
+            if(len!=1 && curr_node->flag==val/(len/10) && val<curr_node->val){
+                swap(curr_node->val,val);
+                swap(curr_node->cnt,cnt);
+            }
+        }
+
     }
 }
 
 void sort_arr(node_four* root,ll arr[],ll val){
-    while((root->val)--) arr[nxt_index++]=val;
-    for(ll i=0;i<10;i++){
-        if(!(root->chk&(1<<i))) continue;
+    for(ll i=0;i<=9;i++){
+        if(root->flag==i){
+            ll v=val*root->len+root->val;
+            while(root->cnt--){
+                arr[nxt_idx++]=v;
+            }
+        }
+
+        if((root->chk&p[i])==0) continue;
         sort_arr(root->child[i],arr,val*10+i);
     }
 }
 
 void ast_sort_four(ll arr[],ll n){
     node_four* root=new node_four();
-    nxt_index=0;
-    ll length[n];
+    ll max_val=0,val_length=1;
+    nxt_idx=0;
 
     for(ll i=0;i<n;i++){
-        ll val=arr[i],len=0;
-        arr[i]=0;
-        while(val){
-            arr[i]=arr[i]*10+val%10;
-            val/=10;
-            len++;
-        }
-        val_length=max(val_length,len);
-        length[i]=len;
+        max_val=max(max_val,arr[i]);
     }
 
-    //clock_t start_time,end_time;
-    //start_time=clock();
-    bld_trie(root,arr,length,n);
-    //end_time=clock();
-    //double time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
-    //cout<<time_taken<<endl;
-    //start_time=clock();
+    while(max_val){
+        val_length*=10;
+        max_val/=10;
+    }
+    p[0]=1;
+    for(ll i=1;i<=10;i++) p[i]=p[i-1]*2;
+    
+
+    // clock_t start_time,end_time;
+    // start_time=clock();
+    bld_trie(root,arr,n,val_length);
+    // end_time=clock();
+    // double time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
+    // cout<<time_taken<<endl;
+    // start_time=clock();
     sort_arr(root,arr,0);
-    //end_time=clock();
-    //time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
-    //cout<<time_taken<<endl;
+    // end_time=clock();
+    // time_taken=double(end_time-start_time)/double(CLOCKS_PER_SEC);
+    // cout<<time_taken<<endl;
 }

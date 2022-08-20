@@ -4,7 +4,7 @@ long long int arr[1000007],n,temp[1000007];
 clock_t start_time,end_time;
 
 void take_input(){
-    freopen("inputs/input01.txt","r",stdin);
+    freopen("inputs/input03.txt","r",stdin);
     scanf("%lli",&n);
     for(int i=0;i<n;i++) scanf("%lli",&arr[i]);
 }
@@ -59,6 +59,13 @@ int main()
     heap_sort(temp,n);
     end_time=clock();
     check("Heap Sort");
+
+    //AST Sort four
+    make_clone();
+    start_time=clock();
+    ast_sort_four(temp,n);
+    end_time=clock();
+    check("AST Sort four");
 
     //AST Sort three
     make_clone();
