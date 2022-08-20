@@ -3,7 +3,7 @@ using namespace std;
 
 #define ll long long int
 
-ll p[11],nxt_idx;
+ll p[10],nxt_idx,idx[1025];
 struct node_four{
     long long int val=0,len=0,cnt=0,chk=0,flag=-1;
     node_four* child[10];
@@ -23,7 +23,6 @@ void bld_trie(node_four* root,ll arr[],ll n,ll val_length){
             len/=10;
             ll v=val/len;
             val%=len;
-//cout<<"CHK"<<" "<<i<<" "<<arr[i]<<" "<<v<<" "<<val<<" "<<len<<endl;
             if((curr_node->chk&p[v])==0){
                 curr_node->child[v]=new node_four();
                 curr_node->chk|=p[v];
@@ -51,16 +50,27 @@ void bld_trie(node_four* root,ll arr[],ll n,ll val_length){
 }
 
 void sort_arr(node_four* root,ll arr[],ll val){
-    for(ll i=0;i<=9;i++){
-        if(root->flag==i){
+    while(root->chk){
+
+        ll right_bit=(root->chk&(-(root->chk)));
+        ll i=idx[right_bit];
+        root->chk-=right_bit;
+
+        if(root->flag<=i){
             ll v=val*root->len+root->val;
-            while(root->cnt--){
+            while(root->cnt>0){
+                root->cnt--;
                 arr[nxt_idx++]=v;
             }
         }
 
-        if((root->chk&p[i])==0) continue;
         sort_arr(root->child[i],arr,val*10+i);
+    }
+
+    ll v=val*root->len+root->val;
+    while(root->cnt>0){
+        root->cnt--;
+        arr[nxt_idx++]=v;
     }
 }
 
@@ -78,7 +88,12 @@ void ast_sort_four(ll arr[],ll n){
         max_val/=10;
     }
     p[0]=1;
-    for(ll i=1;i<=10;i++) p[i]=p[i-1]*2;
+    idx[1]=0;
+
+    for(ll i=1;i<10;i++){
+        p[i]=p[i-1]*2;
+        idx[p[i]]=i;
+    }
     
 
     // clock_t start_time,end_time;
