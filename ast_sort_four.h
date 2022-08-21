@@ -19,18 +19,18 @@ void bld_trie(node_four* root,ll arr[],ll n,ll val_length){
             continue;
         }
 
-        while(len!=1){
-            len/=10;
+        while(len){
             ll v=val/len;
             val%=len;
+            len/=10;
             if((curr_node->chk&p[v])==0){
                 curr_node->child[v]=new node_four();
                 curr_node->chk|=p[v];
                 curr_node=curr_node->child[v];
-                curr_node->len=len;
+                curr_node->len=10*len;
                 curr_node->val=val;
                 curr_node->cnt=cnt;
-                if(len!=1) curr_node->flag=val/(len/10);
+                if(len) curr_node->flag=val/len;
                 else curr_node->flag=0;
                 break;
             }
@@ -40,7 +40,7 @@ void bld_trie(node_four* root,ll arr[],ll n,ll val_length){
                 break;
             }
 
-            if(len!=1 && curr_node->flag==val/(len/10) && val<curr_node->val){
+            if(len && curr_node->flag==val/len && val<curr_node->val){
                 swap(curr_node->val,val);
                 swap(curr_node->cnt,cnt);
             }
@@ -67,7 +67,8 @@ void sort_arr(node_four* root,ll arr[],ll val){
         sort_arr(root->child[i],arr,val*10+i);
     }
 
-    ll v=val*root->len+root->val;
+    ll v=val;
+    if(root->len) v=v*root->len+root->val;
     while(root->cnt>0){
         root->cnt--;
         arr[nxt_idx++]=v;
@@ -84,8 +85,8 @@ void ast_sort_four(ll arr[],ll n){
     }
 
     while(max_val){
-        val_length*=10;
         max_val/=10;
+        if(max_val) val_length*=10;
     }
     p[0]=1;
     idx[1]=0;

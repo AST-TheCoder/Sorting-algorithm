@@ -6,7 +6,7 @@ using namespace std;
 ll next_index,val_len;
 
 struct node_three{
-    int val=0,chk=0;
+    long long int val=0,chk=0;
     node_three* child[10];
 };
 
@@ -19,7 +19,7 @@ void build_trie(node_three* root,ll arr[],ll length[],ll n){
         while(length[i]){
             ll v=0;
             if(!len){
-                v=val-(val/10)*10;
+                v=val%10;
                 val/=10;
                 length[i]--;
             }
@@ -57,6 +57,10 @@ void ast_sort_three(ll arr[],ll n){
         }
         val_len=max(val_len,len);
         length[i]=len;
+        if(arr[i]<0){
+            cout<<"array can't be sorted!! the value is very big or negetive!!"<<endl;
+            return;
+        }
     }
 
     //clock_t start_time,end_time;
